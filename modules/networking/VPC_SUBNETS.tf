@@ -105,8 +105,6 @@ resource "aws_route" "public_internet_gateway" {
   depends_on  = [aws_route_table.public, aws_internet_gateway.ig]
 }
 
-
-
 /* Route table associations */
 resource "aws_route_table_association" "public" {
   count          = "${length(var.public_subnets_cidr)}"

@@ -1,8 +1,8 @@
 resource "aws_autoscaling_group" "ASGFE" {
   name = "${var.environment}-asg-FE"
-  desired_capacity   = 3
-  max_size           = 4
-  min_size           = 3
+  desired_capacity   = 2
+  max_size           = 3
+  min_size           = 2
 
     # link to VPC subnets
   vpc_zone_identifier  = "${var.public_subnets_id}"
@@ -22,12 +22,16 @@ resource "aws_autoscaling_group" "ASGFE" {
     propagate_at_launch = true
   }
 
-  tag {
-    key                 = "Environment"
-    value               = "${var.environment}"
-    propagate_at_launch = true
+  instance_refresh {
+    strategy = "Rolling"
+    /*
+    preferences {
+      min_healthy_percentage = 50
+    }
+    */
+    triggers = ["tag"]
   }
-
+  
   depends_on  = [aws_launch_template.ec2, aws_lb_target_group.albfetg]
 }
 
@@ -47,4 +51,16 @@ resource "aws_autoscaling_policy" "ASGFE_target_tracking_policy" {
   }
 
   depends_on  = [aws_autoscaling_group.ASGFE]
+}
+
+data "aws_instances" "FEInstances" {
+  instance_tags = {
+    Name =  "${var.environment}-frontend"
+  }
+
+  instance_state_names = ["running"]
+
+  depends_on = [
+    aws_autoscaling_group.ASGFE
+  ]
 }

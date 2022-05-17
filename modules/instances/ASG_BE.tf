@@ -21,17 +21,13 @@ resource "aws_autoscaling_group" "ASGBE" {
     propagate_at_launch = true
   }
 
-  tag {
-    key                 = "Environment"
-    value               = "${var.environment}"
-    propagate_at_launch = true
-  }
-
   instance_refresh {
     strategy = "Rolling"
+    /*
     preferences {
-      min_healthy_percentage = 80
+      min_healthy_percentage = 50
     }
+    */
     triggers = ["tag"]
   }
 

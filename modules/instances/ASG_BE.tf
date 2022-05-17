@@ -1,12 +1,11 @@
-
 # BE auto scaling group
-resource "aws_autoscaling_group" "ASGBE" {
-  name = "${var.environment}-asg-BE"
+resource "aws_autoscaling_group" "backend" {
+  name = "${var.environment}-asg-backend"
   desired_capacity   = 2
   max_size           = 3
   min_size           = 2
 
-      # link to VPC subnets
+    # link to VPC subnets
   vpc_zone_identifier  = "${var.public_subnets_id}"
 
     # EC2 launch template
@@ -35,10 +34,10 @@ resource "aws_autoscaling_group" "ASGBE" {
 }
 
 # policy for BE auto scaling group
-resource "aws_autoscaling_policy" "ASGBE_target_tracking_policy" {
-  name = "${aws_autoscaling_group.ASGBE.name}-target-tracking-policy"
+resource "aws_autoscaling_policy" "backend" {
+  name = "${aws_autoscaling_group.backend.name}-target-tracking-policy"
   policy_type = "TargetTrackingScaling"
-  autoscaling_group_name = "${aws_autoscaling_group.ASGBE.name}"
+  autoscaling_group_name = "${aws_autoscaling_group.backend.name}"
   estimated_instance_warmup = 200
 
     # auto scale based on avg CPU utilization
@@ -49,5 +48,5 @@ resource "aws_autoscaling_policy" "ASGBE_target_tracking_policy" {
     target_value = "80"
   }
 
-  depends_on  = [aws_autoscaling_group.ASGBE]
+  depends_on  = [aws_autoscaling_group.backend]
 }

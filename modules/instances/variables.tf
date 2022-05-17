@@ -11,8 +11,8 @@ variable "vpc_id" {
   description = "The VPC ID"
 }
 
-variable "security_group_id" {
-  description = "The security group ID"
+variable "security_groups_ids" {
+  description = "The security group IDs"
 }
 
 variable "ec2_ami" {

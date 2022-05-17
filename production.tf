@@ -21,5 +21,5 @@ module "instances" {
   environment       = "${var.environment}"
   public_subnets_id = module.networking.public_subnets_id
   vpc_id            = module.networking.vpc_id
-  security_group_id = module.networking.default_sg_id
+  security_groups_ids = module.networking.security_groups_ids
 }

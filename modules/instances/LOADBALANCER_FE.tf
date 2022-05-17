@@ -1,13 +1,18 @@
-resource "aws_lb" "albfe" {
-  name            = "${var.environment}-ALB"
-  security_groups = ["${var.security_group_id}"]
+resource "aws_lb" "frontend" {
+  name            = "${var.environment}-alb-fe"
+  security_groups = "${var.security_groups_ids}"
   subnets         = "${var.public_subnets_id}"
   load_balancer_type = "application"
+
+  tags = {
+    Name = "${var.environment}-alb-fe"
+    Environment = "${var.environment}"
+  }
 }
 
 
-resource "aws_lb_target_group" "albfetg" {
-  name     = "${var.environment}-ALB-FE-TG"
+resource "aws_lb_target_group" "frontend" {
+  name     = "${var.environment}-alb-fe-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = "${var.vpc_id}"
@@ -21,17 +26,27 @@ resource "aws_lb_target_group" "albfetg" {
     type = "lb_cookie"
   }
 */
+
+  tags = {
+    Name = "${var.environment}-alb-fe-tg"
+    Environment = "${var.environment}"
+  }
 }
 
-resource "aws_alb_listener" "listener_http" {
-  load_balancer_arn = "${aws_lb.albfe.arn}"
+resource "aws_alb_listener" "http" {
+  load_balancer_arn = "${aws_lb.frontend.arn}"
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = "${aws_lb_target_group.albfetg.arn}"
+    target_group_arn = "${aws_lb_target_group.frontend.arn}"
     type             = "forward"
   }
 
-  depends_on  = [aws_lb.albfe, aws_lb_target_group.albfetg]
+  tags = {
+    Name = "${var.environment}-alb-fe-listener-http"
+    Environment = "${var.environment}"
+  }
+
+  depends_on  = [aws_lb.frontend, aws_lb_target_group.frontend]
 }

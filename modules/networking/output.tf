@@ -15,7 +15,7 @@ output "default_sg_id" {
 }
 
 output "security_groups_ids" {
-  value = ["${aws_security_group.default.id}"]
+  value = ["${aws_security_group.inbound_http.id}","${aws_security_group.inbound_https.id}","${aws_security_group.inbound_ssh.id}","${aws_security_group.outbound_all.id}"]
 }
 
 output "public_route_table" {

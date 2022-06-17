@@ -6,20 +6,21 @@ locals {
 module "networking" {
   source = "./modules/networking"
 
-  region               = "${var.region}"
-  environment          = "${var.environment}"
-  vpc_cidr             = "${var.vpc_cidr}"
-  public_subnets_cidr  = "${var.public_subnets_cidr}"
-  private_subnets_cidr = "${var.private_subnets_cidr}"
-  availability_zones   = "${local.availability_zones}"
+  region               = var.region
+  environment          = var.environment
+  vpc_cidr             = var.vpc_cidr
+  public_subnets_cidr  = var.public_subnets_cidr
+  private_subnets_cidr = var.private_subnets_cidr
+  availability_zones   = local.availability_zones
 }
 
 
 module "instances" {
   source = "./modules/instances"
-  
-  environment       = "${var.environment}"
-  public_subnets_id = module.networking.public_subnets_id
-  vpc_id            = module.networking.vpc_id
+
+  ec2_instance_type   = var.ec2_instance_type
+  environment         = var.environment
+  public_subnets_id   = module.networking.public_subnets_id
+  vpc_id              = module.networking.vpc_id
   security_groups_ids = module.networking.security_groups_ids
 }

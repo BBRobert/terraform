@@ -3,14 +3,12 @@ Subnets
 ======*/
 /* Internet gateway for the public subnet */
 resource "aws_internet_gateway" "ig" {
-  vpc_id = "${aws_vpc.vpc.id}"
+  vpc_id = aws_vpc.vpc.id
 
   tags = {
     Name        = "${var.environment}-igw"
     Environment = "${var.environment}"
   }
-
-  depends_on  = [aws_vpc.vpc]
 }
 
 /* Elastic IP for NAT */
@@ -43,81 +41,67 @@ resource "aws_route" "private_nat_gateway" {
 
 /* Public subnet */
 resource "aws_subnet" "public_subnet" {
-  vpc_id                  = "${aws_vpc.vpc.id}"
-  count                   = "${length(var.public_subnets_cidr)}"
-  cidr_block              = "${element(var.public_subnets_cidr, count.index)}"
-  availability_zone       = "${element(var.availability_zones, count.index)}"
+  vpc_id                  = aws_vpc.vpc.id
+  count                   = length(var.public_subnets_cidr)
+  cidr_block              = element(var.public_subnets_cidr, count.index)
+  availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = true
 
   tags = {
     Name        = "${var.environment}-${element(var.availability_zones, count.index)}-public-subnet"
     Environment = "${var.environment}"
   }
-
-  depends_on  = [aws_vpc.vpc]
 }
 
 /* Private subnet */
 resource "aws_subnet" "private_subnet" {
-  vpc_id                  = "${aws_vpc.vpc.id}"
-  count                   = "${length(var.private_subnets_cidr)}"
-  cidr_block              = "${element(var.private_subnets_cidr, count.index)}"
-  availability_zone       = "${element(var.availability_zones, count.index)}"
+  vpc_id                  = aws_vpc.vpc.id
+  count                   = length(var.private_subnets_cidr)
+  cidr_block              = element(var.private_subnets_cidr, count.index)
+  availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = false
 
   tags = {
     Name        = "${var.environment}-${element(var.availability_zones, count.index)}-private-subnet"
     Environment = "${var.environment}"
   }
-
-  depends_on  = [aws_vpc.vpc]
 }
 
 /* Routing table for private subnet */
 resource "aws_route_table" "private" {
-  vpc_id = "${aws_vpc.vpc.id}"
+  vpc_id = aws_vpc.vpc.id
 
   tags = {
     Name        = "${var.environment}-private-route-table"
     Environment = "${var.environment}"
   }
-
-  depends_on  = [aws_vpc.vpc]
 }
 
 /* Routing table for public subnet */
 resource "aws_route_table" "public" {
-  vpc_id = "${aws_vpc.vpc.id}"
+  vpc_id = aws_vpc.vpc.id
 
   tags = {
     Name        = "${var.environment}-public-route-table"
     Environment = "${var.environment}"
   }
-
-  depends_on  = [aws_vpc.vpc]
 }
 
 resource "aws_route" "public_internet_gateway" {
-  route_table_id         = "${aws_route_table.public.id}"
+  route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.ig.id}"
-
-  depends_on  = [aws_route_table.public, aws_internet_gateway.ig]
+  gateway_id             = aws_internet_gateway.ig.id
 }
 
 /* Route table associations */
 resource "aws_route_table_association" "public" {
-  count          = "${length(var.public_subnets_cidr)}"
-  subnet_id      = "${element(aws_subnet.public_subnet.*.id, count.index)}"
-  route_table_id = "${aws_route_table.public.id}"
-
-  depends_on  = [aws_route_table.public]
+  count          = length(var.public_subnets_cidr)
+  subnet_id      = element(aws_subnet.public_subnet.*.id, count.index)
+  route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private" {
-  count          = "${length(var.private_subnets_cidr)}"
-  subnet_id      = "${element(aws_subnet.private_subnet.*.id, count.index)}"
-  route_table_id = "${aws_route_table.private.id}"
-
-  depends_on  = [aws_route_table.private]
+  count          = length(var.private_subnets_cidr)
+  subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
+  route_table_id = aws_route_table.private.id
 }

@@ -1,14 +1,14 @@
 # BE auto scaling group
 resource "aws_autoscaling_group" "backend" {
-  name = "${var.environment}-asg-backend"
-  desired_capacity   = 2
-  max_size           = 3
-  min_size           = 2
+  name             = "${var.environment}-asg-backend"
+  desired_capacity = var.be_asg_desired_capacity
+  max_size         = var.be_asg_max_size
+  min_size         = var.be_asg_min_size
 
-    # link to VPC subnets
-  vpc_zone_identifier  = "${var.public_subnets_id}"
+  # link to VPC subnets
+  vpc_zone_identifier = var.public_subnets_id
 
-    # EC2 launch template
+  # EC2 launch template
   launch_template {
     id      = aws_launch_template.ec2.id
     version = aws_launch_template.ec2.latest_version
@@ -29,24 +29,20 @@ resource "aws_autoscaling_group" "backend" {
     */
     triggers = ["tag"]
   }
-
-  depends_on  = [aws_launch_template.ec2]
 }
 
 # policy for BE auto scaling group
 resource "aws_autoscaling_policy" "backend" {
-  name = "${aws_autoscaling_group.backend.name}-target-tracking-policy"
-  policy_type = "TargetTrackingScaling"
-  autoscaling_group_name = "${aws_autoscaling_group.backend.name}"
+  name                      = "${aws_autoscaling_group.backend.name}-target-tracking-policy"
+  policy_type               = "TargetTrackingScaling"
+  autoscaling_group_name    = aws_autoscaling_group.backend.name
   estimated_instance_warmup = 200
 
-    # auto scale based on avg CPU utilization
+  # auto scale based on avg CPU utilization
   target_tracking_configuration {
     predefined_metric_specification {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
     target_value = "80"
   }
-
-  depends_on  = [aws_autoscaling_group.backend]
 }

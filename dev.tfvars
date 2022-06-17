@@ -1,6 +1,6 @@
 //AWS 
 region      = "eu-west-1"
-environment = "terraform"
+environment = "app-dev"
 
 /* module networking */
 vpc_cidr             = "10.0.0.0/20"
@@ -10,4 +10,3 @@ private_subnets_cidr = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"] //List of p
 /* EC2 */
 ec2_instance_type  = "t2.micro"
 ec2_user_data_file = "./modules/instances/user-data.sh"
-

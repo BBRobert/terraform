@@ -1,7 +1,7 @@
-output "FE_LB_DNS" {
-  value = aws_lb.frontend.dns_name
+output "LB_DNS" {
+  value = aws_lb.this.dns_name
 }
 
-output "FE_PUBLIC_IPS" {
-  value = data.aws_instances.frontend.public_ips
+output "PUBLIC_IPS" {
+  value = data.aws_instances.this.public_ips
 }

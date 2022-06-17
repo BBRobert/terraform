@@ -1,18 +1,18 @@
-resource "aws_lb" "frontend" {
-  name               = "${var.environment}-alb-fe"
+resource "aws_lb" "this" {
+  name               = "${var.environment}-alb-${var.instance_group}"
   security_groups    = var.security_groups_ids
   subnets            = var.public_subnets_id
   load_balancer_type = "application"
 
   tags = {
-    Name        = "${var.environment}-alb-fe"
+    Name        = "${var.environment}-alb-${var.instance_group}"
     Environment = "${var.environment}"
   }
 }
 
 
-resource "aws_lb_target_group" "frontend" {
-  name     = "${var.environment}-alb-fe-tg"
+resource "aws_lb_target_group" "this" {
+  name     = "${var.environment}-alb-${var.instance_group}-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -28,23 +28,23 @@ resource "aws_lb_target_group" "frontend" {
 */
 
   tags = {
-    Name        = "${var.environment}-alb-fe-tg"
+    Name        = "${var.environment}-alb-${var.instance_group}-tg"
     Environment = "${var.environment}"
   }
 }
 
 resource "aws_alb_listener" "http" {
-  load_balancer_arn = aws_lb.frontend.arn
+  load_balancer_arn = aws_lb.this.arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.frontend.arn
+    target_group_arn = aws_lb_target_group.this.arn
     type             = "forward"
   }
 
   tags = {
-    Name        = "${var.environment}-alb-fe-listener-http"
+    Name        = "${var.environment}-alb-${var.instance_group}-listener-http"
     Environment = "${var.environment}"
   }
 }

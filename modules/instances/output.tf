@@ -5,3 +5,7 @@ output "LB_DNS" {
 output "PUBLIC_IPS" {
   value = data.aws_instances.this.public_ips
 }
+
+output "PRIVATE_IPS" {
+  value = data.aws_instances.this.private_ips
+}

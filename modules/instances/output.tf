@@ -1,5 +1,5 @@
 output "LB_DNS" {
-  value = aws_lb.this.dns_name
+  value = var.do_create_lb ? aws_lb.this[0].dns_name : null
 }
 
 output "PUBLIC_IPS" {

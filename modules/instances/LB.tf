@@ -1,8 +1,10 @@
 resource "aws_lb" "this" {
-  name               = "${var.environment}-alb-${var.instance_group}"
-  security_groups    = var.security_groups_ids
-  subnets            = var.public_subnets_id
-  load_balancer_type = "application"
+  count               = var.do_create_lb ? 1 : 0
+   
+  name                = "${var.environment}-alb-${var.instance_group}"
+  security_groups     = var.security_groups_ids
+  subnets             = var.public_subnets_id
+  load_balancer_type  = "application"
 
   tags = {
     Name        = "${var.environment}-alb-${var.instance_group}"
@@ -12,6 +14,8 @@ resource "aws_lb" "this" {
 
 
 resource "aws_lb_target_group" "this" {
+  count               = var.do_create_lb ? 1 : 0
+
   name     = "${var.environment}-alb-${var.instance_group}-tg"
   port     = 80
   protocol = "HTTP"
@@ -34,12 +38,14 @@ resource "aws_lb_target_group" "this" {
 }
 
 resource "aws_alb_listener" "http" {
-  load_balancer_arn = aws_lb.this.arn
+  count               = var.do_create_lb ? 1 : 0
+
+  load_balancer_arn = aws_lb.this[0].arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.this.arn
+    target_group_arn = aws_lb_target_group.this[0].arn
     type             = "forward"
   }
 

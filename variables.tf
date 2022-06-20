@@ -69,3 +69,15 @@ variable "be_asg_min_size" {
   type        = number
   default     = 2
 }
+
+variable "do_create_fe_lb" {
+  description = "Create or dont create FrontEnd LoadBalancer"
+  type = bool
+  default = true
+}
+
+variable "do_create_be_lb" {
+  description = "Create or dont create Backend LoadBalancer"
+  type = bool
+  default = true
+}

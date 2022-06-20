@@ -57,3 +57,10 @@ variable "ec2_template" {
   description = "The template of the EC2 instances for the auto scaling group"
   nullable    = false
 }
+
+variable "do_create_lb" {
+  description = "Create or dont create LB"
+  type = bool
+  default = true
+}
+

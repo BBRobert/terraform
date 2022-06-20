@@ -55,6 +55,8 @@ module "backend" {
   asg_desired_capacity    = var.be_asg_desired_capacity
   asg_max_size            = var.be_asg_max_size
   asg_min_size            = var.be_asg_min_size
+
+  do_create_lb            = var.do_create_be_lb
 }
 
 
@@ -72,4 +74,6 @@ module "frontend" {
   asg_desired_capacity    = var.fe_asg_desired_capacity
   asg_max_size            = var.fe_asg_max_size
   asg_min_size            = var.fe_asg_min_size
+
+  do_create_lb            = var.do_create_fe_lb
 }

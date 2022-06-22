@@ -39,11 +39,12 @@ resource "aws_route" "private_nat_gateway" {
 }
 */
 
+
 /* Public subnet */
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.vpc.id
-  count                   = length(var.public_subnets_cidr)
-  cidr_block              = element(var.public_subnets_cidr, count.index)
+  count                   = local.number_subnets
+  cidr_block              = element(local.public_subnets_cidr, count.index)
   availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = true
 
@@ -56,8 +57,8 @@ resource "aws_subnet" "public_subnet" {
 /* Private subnet */
 resource "aws_subnet" "private_subnet" {
   vpc_id                  = aws_vpc.vpc.id
-  count                   = length(var.private_subnets_cidr)
-  cidr_block              = element(var.private_subnets_cidr, count.index)
+  count                   = local.number_subnets
+  cidr_block              = element(local.private_subnets_cidr, count.index)
   availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = false
 
@@ -95,13 +96,15 @@ resource "aws_route" "public_internet_gateway" {
 
 /* Route table associations */
 resource "aws_route_table_association" "public" {
-  count          = length(var.public_subnets_cidr)
-  subnet_id      = element(aws_subnet.public_subnet.*.id, count.index)
-  route_table_id = aws_route_table.public.id
+  //count          = length(local.public_subnets_cidr)
+  count           = local.number_subnets
+  subnet_id       = element(aws_subnet.public_subnet.*.id, count.index)
+  route_table_id  = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private" {
-  count          = length(var.private_subnets_cidr)
-  subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
-  route_table_id = aws_route_table.private.id
+  //count          = length(local.public_subnets_cidr)
+  count           = local.number_subnets
+  subnet_id       = element(aws_subnet.private_subnet.*.id, count.index)
+  route_table_id  = aws_route_table.private.id
 }

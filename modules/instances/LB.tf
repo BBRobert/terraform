@@ -1,7 +1,7 @@
 resource "aws_lb" "this" {
   name               = "${var.environment}-alb-${var.instance_group}"
-  security_groups    = var.security_groups_ids
-  subnets            = var.public_subnets_id
+  security_groups    = values(var.security_groups_ids)
+  subnets            = var.subnets_id
   load_balancer_type = "application"
 
   tags = {

@@ -1,6 +1,6 @@
-variable "public_subnets_id" {
+variable "subnets_id" {
   type        = list(any)
-  description = "The IDs of the public subnets"
+  description = "The IDs of the subnets"
 }
 
 variable "environment" {

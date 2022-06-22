@@ -7,7 +7,7 @@ output "public_subnets_id" {
 }
 
 output "private_subnets_id" {
-  value = ["${aws_subnet.private_subnet.*.id}"]
+  value = aws_subnet.private_subnet.*.id
 }
 
 output "default_sg_id" {
@@ -15,7 +15,12 @@ output "default_sg_id" {
 }
 
 output "security_groups_ids" {
-  value = ["${aws_security_group.inbound_http.id}", "${aws_security_group.inbound_https.id}", "${aws_security_group.inbound_ssh.id}", "${aws_security_group.outbound_all.id}"]
+  value = {
+    "inbound_http" = "${aws_security_group.inbound_http.id}" 
+    "inbound_https" = "${aws_security_group.inbound_https.id}" 
+    "inbound_ssh" = "${aws_security_group.inbound_ssh.id}" 
+    "outbound_all" = "${aws_security_group.outbound_all.id}"
+  }
 }
 
 output "public_route_table" {

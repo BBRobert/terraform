@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "this" {
   min_size         = var.asg_min_size
 
   # link to VPC subnets
-  vpc_zone_identifier = var.public_subnets_id
+  vpc_zone_identifier = var.subnets_id
 
   # link to FE load balancer
   target_group_arns = ["${aws_lb_target_group.this.arn}"]

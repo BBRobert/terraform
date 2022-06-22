@@ -8,7 +8,7 @@ resource "aws_autoscaling_group" "this" {
   vpc_zone_identifier = var.subnets_id
 
   # link to FE load balancer
-  target_group_arns = ["${aws_lb_target_group.this.arn}"]
+  target_group_arns = var.do_create_lb ? ["${aws_lb_target_group.this[0].arn}"] : []
 
   # EC2 launch template
   launch_template {

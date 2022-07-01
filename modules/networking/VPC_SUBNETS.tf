@@ -97,14 +97,14 @@ resource "aws_route" "public_internet_gateway" {
 /* Route table associations */
 resource "aws_route_table_association" "public" {
   //count          = length(local.public_subnets_cidr)
-  count           = local.number_subnets
-  subnet_id       = element(aws_subnet.public_subnet.*.id, count.index)
-  route_table_id  = aws_route_table.public.id
+  count          = local.number_subnets
+  subnet_id      = element(aws_subnet.public_subnet.*.id, count.index)
+  route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private" {
   //count          = length(local.public_subnets_cidr)
-  count           = local.number_subnets
-  subnet_id       = element(aws_subnet.private_subnet.*.id, count.index)
-  route_table_id  = aws_route_table.private.id
+  count          = local.number_subnets
+  subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
+  route_table_id = aws_route_table.private.id
 }

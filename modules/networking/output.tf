@@ -16,10 +16,10 @@ output "default_sg_id" {
 
 output "security_groups_ids" {
   value = {
-    "inbound_http" = "${aws_security_group.inbound_http.id}" 
-    "inbound_https" = "${aws_security_group.inbound_https.id}" 
-    "inbound_ssh" = "${aws_security_group.inbound_ssh.id}" 
-    "outbound_all" = "${aws_security_group.outbound_all.id}"
+    "inbound_http"  = "${aws_security_group.inbound_http.id}"
+    "inbound_https" = "${aws_security_group.inbound_https.id}"
+    "inbound_ssh"   = "${aws_security_group.inbound_ssh.id}"
+    "outbound_all"  = "${aws_security_group.outbound_all.id}"
   }
 }
 

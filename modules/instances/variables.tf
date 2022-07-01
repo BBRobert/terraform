@@ -60,7 +60,7 @@ variable "ec2_template" {
 
 variable "do_create_lb" {
   description = "Create or dont create LB"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 

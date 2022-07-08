@@ -1,4 +1,6 @@
 
+
+
 module "networking" {
   source = "./modules/networking"
 
@@ -14,7 +16,7 @@ module "backend" {
   environment    = var.environment
   instance_group = "backend"
 
-  subnets_id          = module.networking.private_subnets_id
+  subnets_id          = module.networking.public_subnets_id
   vpc_id              = module.networking.vpc_id
   security_groups_ids = module.networking.security_groups_ids
 

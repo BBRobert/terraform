@@ -1,0 +1,9 @@
+[frontend]
+%{ for index, ip in fe_public_ips ~}
+frontend${index} ansible_host=${fe_public_ips[index]} ansible_port=${ansible_port} ansible_ssh_private_key_file=${pk_path} ansible_ssh_extra_args='${ansible_args}' # ${fe_public_ids[index]}
+%{ endfor ~}
+
+[backend]
+%{ for index, dns in be_public_ips ~}
+backend${index} ansible_host=${be_public_ips[index]} ansible_port=${ansible_port} ansible_ssh_private_key_file=${pk_path} ansible_ssh_extra_args='${ansible_args}' # ${be_public_ids[index]}
+%{ endfor ~}

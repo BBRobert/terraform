@@ -6,6 +6,7 @@ output "FE_INSTANCES_PUBLIC_IPs" {
   value = module.frontend.PUBLIC_IPS
 }
 
+
 output "FE_INSTANCES_PRIVATE_IPs" {
   value = module.frontend.PRIVATE_IPS
 }
@@ -21,3 +22,5 @@ output "BE_INSTANCES_PUBLIC_IPs" {
 output "BE_INSTANCES_PRIVATE_IPs" {
   value = module.backend.PRIVATE_IPS
 }
+
+

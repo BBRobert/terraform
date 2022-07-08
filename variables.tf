@@ -71,3 +71,13 @@ variable "do_create_be_lb" {
   type        = bool
   default     = true
 }
+
+variable "key_name" {
+  default = "terraform_pk"
+}
+
+variable "do_init_ansible_playbook" {
+  description = "Run init ansible playbook"
+  type        = bool
+  default     = true
+}

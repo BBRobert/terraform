@@ -63,4 +63,3 @@ variable "do_create_lb" {
   type        = bool
   default     = true
 }
-

@@ -58,3 +58,4 @@ data "aws_instances" "this" {
 
   depends_on = [aws_autoscaling_group.this]
 }
+

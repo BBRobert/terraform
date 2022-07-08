@@ -6,6 +6,10 @@ output "PUBLIC_IPS" {
   value = data.aws_instances.this.public_ips
 }
 
+output "PUBLIC_IDS" {
+  value = data.aws_instances.this.ids
+}
+
 output "PRIVATE_IPS" {
   value = data.aws_instances.this.private_ips
 }

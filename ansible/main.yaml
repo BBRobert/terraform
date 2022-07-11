@@ -1,4 +1,4 @@
-- name: Update all packages, install nano
+- name: Update all packages and install nano on all hosts
   hosts: all
   remote_user: ec2-user
   become: yes
@@ -6,7 +6,7 @@
   roles:
     - roles/common
 
-- name: Install and start apache, create index.html
+- name: Install and start apache, create index.html on frontend servers
   hosts: frontend
   remote_user: ec2-user
   become: yes

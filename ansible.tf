@@ -38,18 +38,10 @@ resource "null_resource" "run_init_ansible_playbook" {
     create_website
     delete_website
   */
-
-  /*provisioner "local-exec" {
-    command = "ansible-playbook -i ansible/inventory.ini ansible/playbook_frontend.yaml --tags=init"
-  }*/
   
   provisioner "local-exec" {
     command = "ansible-playbook -i ansible/inventory.ini ansible/main.yaml"
   }
-
-  /*provisioner "local-exec" {
-    command = "ansible-playbook -i ansible/inventory.ini ansible/playbook_backend.yaml --tags=update,install"
-  }*/
 
   depends_on = [time_sleep.wait_30_secs_for_ansible_playbook]
 }

@@ -38,7 +38,7 @@ resource "null_resource" "run_init_ansible_playbook" {
     create_website
     delete_website
   */
-  
+
   provisioner "local-exec" {
     command = "ansible-playbook -i ansible/inventory.ini ansible/main.yaml"
   }

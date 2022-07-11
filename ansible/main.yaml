@@ -1,0 +1,15 @@
+- name: Update all packages, install nano
+  hosts: all
+  remote_user: ec2-user
+  become: yes
+  gather_facts: false
+  roles:
+    - roles/common
+
+- name: Install and start apache, create index.html
+  hosts: frontend
+  remote_user: ec2-user
+  become: yes
+  gather_facts: false
+  roles:
+    - roles/web

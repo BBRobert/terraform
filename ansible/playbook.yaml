@@ -1,0 +1,51 @@
+- hosts: frontend
+  remote_user: ec2-user
+  become: yes
+  tasks:
+  - name: Update all packages to latest version
+    yum:
+      name: '*'
+      state: latest
+    tags: [update, init]
+  - name: Install Apache
+    yum:
+      name: httpd
+      state: installed
+    tags: [install_apache, install, init]
+  - name: Start Apache
+    service:
+      name: httpd
+      state: started
+    tags: [start_apache, install, init] 
+  - name: Install nano
+    yum:
+      name: nano
+      state: installed
+    tags: [install_nano, install, init]
+  - name: Create HTML File
+    shell: echo "<p><h1>Hello World from $(hostname -f)</h1></p><p><h2>Updated using Ansible</h2></p>" > /var/www/html/index.html
+    args:
+      executable: /bin/bash
+    tags: [create_website, init]
+    notify:
+      - Reload Apache
+  - name: Remove Apache
+    yum:
+      name: httpd
+      state: absent
+    tags: [remove_apache, cleanup]
+  - name: Remove nano
+    yum:
+      name: nano
+      state: absent
+    tags: [remove_nano, cleanup]
+  - name: Remove website
+    file:
+      path: /var/www/html/index.html
+      state: absent
+    tags: [delete_website, cleanup]
+  handlers:
+  - name: Reload Apache
+    service:
+      name: httpd
+      state: reloaded

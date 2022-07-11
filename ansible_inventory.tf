@@ -12,19 +12,44 @@ resource "local_file" "ansible_inventory" {
   filename = "ansible/inventory.ini"
 }
 
-resource "time_sleep" "wait_1_mins_for_ansible_playbook" {
+resource "time_sleep" "wait_30_secs_for_ansible_playbook" {
   count = var.do_init_ansible_playbook ? 1 : 0
 
   depends_on = [module.frontend, module.backend]
 
-  create_duration = "60s"
+  create_duration = "30s"
 }
 
 resource "null_resource" "run_init_ansible_playbook" {
   count = var.do_init_ansible_playbook ? 1 : 0
+
+  /*
+  Tags for ansible playbook:
+    init: update all packages; install apache, nano; start apache; create website
+    install: install apache, nano
+    cleanup: removes apache, nano and website
+    update: update all packages
+    
+    install_apache
+    start_apache
+    remove_apache
+    install_nano
+    remove nano
+    create_website
+    delete_website
+  */
+
+  /*provisioner "local-exec" {
+    command = "ansible-playbook -i ansible/inventory.ini ansible/playbook_frontend.yaml --tags=init"
+  }*/
+  
   provisioner "local-exec" {
-    command = "ansible-playbook -i ansible/inventory.ini ansible/init.yaml"
+    command = "ansible-playbook -i ansible/inventory.ini ansible/main.yaml"
   }
 
-  depends_on = [time_sleep.wait_1_mins_for_ansible_playbook]
+  /*provisioner "local-exec" {
+    command = "ansible-playbook -i ansible/inventory.ini ansible/playbook_backend.yaml --tags=update,install"
+  }*/
+
+  depends_on = [time_sleep.wait_30_secs_for_ansible_playbook]
 }

@@ -13,7 +13,7 @@ resource "local_file" "ansible_inventory" {
 }
 
 resource "time_sleep" "wait_30_secs_for_ansible_playbook" {
-  count = var.do_init_ansible_playbook ? 1 : 0
+  count = var.do_run_ansible_playbook ? 1 : 0
 
   depends_on = [module.frontend, module.backend]
 
@@ -21,7 +21,7 @@ resource "time_sleep" "wait_30_secs_for_ansible_playbook" {
 }
 
 resource "null_resource" "run_init_ansible_playbook" {
-  count = var.do_init_ansible_playbook ? 1 : 0
+  count = var.do_run_ansible_playbook ? 1 : 0
 
   /*
   Tags for ansible playbook:
@@ -40,7 +40,7 @@ resource "null_resource" "run_init_ansible_playbook" {
   */
 
   provisioner "local-exec" {
-    command = "ansible-playbook -i ansible/inventory.ini ansible/main.yaml"
+    command = var.ansible_tags=="" ? "${local.ansible_run}" : "${local.ansible_run} --tags=${var.ansible_tags}" 
   }
 
   depends_on = [time_sleep.wait_30_secs_for_ansible_playbook]

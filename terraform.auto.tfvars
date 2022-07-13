@@ -12,4 +12,8 @@ ec2_user_data_file = "./modules/instances/user-data.sh"
 do_create_fe_lb = true
 do_create_be_lb = true
 
-do_init_ansible_playbook = true
+do_run_ansible_playbook = true
+ansible_command = "ansible-playbook"
+ansible_inventory = "ansible/inventory.ini"
+ansible_playbook = "ansible/main.yaml"
+ansible_tags = ""

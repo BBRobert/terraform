@@ -76,8 +76,32 @@ variable "key_name" {
   default = "terraform_pk"
 }
 
-variable "do_init_ansible_playbook" {
+variable "do_run_ansible_playbook" {
   description = "Run init ansible playbook"
   type        = bool
   default     = true
+}
+
+variable "ansible_command" {
+  description = "Command to run ansible"
+  type = string
+  default = "ansible-playbook"
+}
+
+variable "ansible_inventory" {
+  description = "Path to ansible inventory file"
+  type = string
+  default = "ansible/inventory.ini"
+}
+
+variable "ansible_playbook" {
+  description = "Path to ansible playbook"
+  type = string
+  default = "ansible/main.yaml"
+}
+
+variable "ansible_tags" {
+  description = "Tags for ansible playbook"
+  type = string
+  default = ""
 }

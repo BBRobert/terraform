@@ -1,0 +1,10 @@
+- name: Install Apache
+  yum:
+    name: httpd
+    state: installed
+  tags: [install_apache, install, init]
+- name: Start Apache
+  service:
+    name: httpd
+    state: started
+  tags: [start_apache, install, init] 

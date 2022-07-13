@@ -1,29 +1,4 @@
 ---
 # tasks file for web
-- name: Install Apache
-  yum:
-    name: httpd
-    state: installed
-  tags: [install_apache, install, init]
-- name: Start Apache
-  service:
-    name: httpd
-    state: started
-  tags: [start_apache, install, init] 
-- name: Create HTML File
-  shell: echo "<p><h1>Hello World from $(hostname -f)</h1></p><p><h2>Updated using Ansible</h2></p>" > /var/www/html/index.html
-  args:
-    executable: /bin/bash
-  tags: [create_website, init]
-  notify:
-    - Reload Apache
-- name: Remove Apache
-  yum:
-    name: httpd
-    state: absent
-  tags: [remove_apache, cleanup, never]
-- name: Remove website
-  file:
-    path: /var/www/html/index.html
-    state: absent
-  tags: [delete_website, cleanup, never]
+- include: install_apache.yml
+- include: create_website.yml

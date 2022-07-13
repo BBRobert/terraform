@@ -1,0 +1,22 @@
+---
+# tasks file for cleanup
+- name: Remove packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - nano
+    - tree
+  tags: [remove_nano, cleanup, never]
+
+- name: Remove Apache
+  yum:
+    name: httpd
+    state: absent
+  tags: [remove_apache, cleanup, never]
+
+- name: Remove website
+  file:
+    path: /var/www/html/index.html
+    state: absent
+  tags: [delete_website, cleanup, never]

@@ -1,0 +1,8 @@
+- name: Print ansible_facts
+  ansible.builtin.debug:
+      var: ansible_facts
+  tags: [vars, facts, never]
+- name: Print hostvars
+  ansible.builtin.debug:
+      var: hostvars
+  tags: [vars, hostvars, never]

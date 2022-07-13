@@ -1,0 +1,13 @@
+- name: Update all packages to latest version
+  yum:
+    name: '*'
+    state: latest
+  tags: [update, init]
+- name: Install packages (nano, tree)
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items: 
+    - nano
+    - tree
+  tags: [install_packages, install, init]

@@ -11,4 +11,4 @@ backend${index} ansible_host=${be_public_ips[index]} # ${be_public_ids[index]}
 [all:vars]
 ansible_port=${ansible_port}
 ansible_ssh_private_key_file=${pk_path}
-ansible_ssh_extra_args=${ansible_args}
+ansible_ssh_extra_args='${ansible_args}'

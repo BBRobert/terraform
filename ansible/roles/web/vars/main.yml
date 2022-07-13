@@ -1,2 +1,3 @@
 ---
 # vars file for web
+html_welcome_message: "Hello World"

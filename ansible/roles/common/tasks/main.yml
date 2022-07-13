@@ -1,17 +1,4 @@
 ---
 # tasks file for common
-- name: Update all packages to latest version
-  yum:
-    name: '*'
-    state: latest
-  tags: [update, init]
-- name: Install nano
-  yum:
-    name: nano
-    state: installed
-  tags: [install_nano, install, init]
-- name: Remove nano
-  yum:
-    name: nano
-    state: absent
-  tags: [remove_nano, cleanup, never]
+- include: install_packages.yml
+- include: debug.yml

@@ -1,0 +1,5 @@
+<html>
+<h1>{{ html_welcome_message }}! I'm webserver <b>{{ inventory_hostname }}</b></h1>
+<h2>Private IP: {{ ansible_facts['default_ipv4']['address'] }}</h2>
+<h2>Public IP: {{ hostvars[inventory_hostname]['ansible_host'] }}</h2>
+</html>

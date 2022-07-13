@@ -2,7 +2,6 @@
   hosts: all
   remote_user: ec2-user
   become: yes
-  gather_facts: false
   roles:
     - roles/common
 
@@ -10,6 +9,14 @@
   hosts: frontend
   remote_user: ec2-user
   become: yes
-  gather_facts: false
   roles:
     - roles/web
+
+- name: Cleanup
+  hosts: all
+  remote_user: ec2-user
+  become: yes
+  gather_facts: false
+  roles:
+    - roles/cleanup
+  tags: [cleanup, never]

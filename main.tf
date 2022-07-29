@@ -1,6 +1,6 @@
 
 
-
+# module for networking
 module "networking" {
   source = "./modules/networking"
 
@@ -9,7 +9,7 @@ module "networking" {
   availability_zones = local.availability_zones
 }
 
-
+# module for backend apps
 module "backend" {
   source = "./modules/instances"
 
@@ -28,7 +28,7 @@ module "backend" {
   do_create_lb = var.do_create_be_lb
 }
 
-
+# module for frontend apps
 module "frontend" {
   source = "./modules/instances"
 
